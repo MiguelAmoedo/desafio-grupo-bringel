@@ -24,4 +24,6 @@ Primeiro, faça o clone do repositório para a sua máquina local:
 
 ```bash
 git clone https://github.com/MiguelAmoedo/desafio-grupo-bringel.git
-cd seu-repositorio
+cd desafio-grupo-bringel
+docker-compose up --build
+
