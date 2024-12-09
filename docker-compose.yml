@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  # Serviço do banco de dados
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cme_db
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+  # Serviço da aplicação Python (Flask)
+  app:
+    build: ./project2  # Diretório do código Python
+    environment:
+      - DATABASE_URL=postgresql://admin:password@db:5432/cme_db
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - app_network
+    command: ["flask", "run", "--host=0.0.0.0"]
+
+  # Serviço da aplicação React
+  react:
+    build: ./desafio-bringell  # Diretório do código React
+    ports:
+      - "3000:3000"  # Porta do React
+    volumes:
+      - ./desafio-bringell:/app  # Mapeando o código local para o container
+      - /app/node_modules  # Garantindo que node_modules seja persistente dentro do container
+    depends_on:
+      - db
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
+
+volumes:
+  pgdata:
