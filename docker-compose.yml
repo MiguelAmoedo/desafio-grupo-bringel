@@ -15,7 +15,7 @@ services:
 
   # Serviço da aplicação Python (Flask)
   app:
-    build: ./project2  # Diretório do código Python
+    build: ./flash-api  # Diretório do código Python
     environment:
       - DATABASE_URL=postgresql://admin:password@db:5432/cme_db
     ports:
@@ -28,11 +28,11 @@ services:
 
   # Serviço da aplicação React
   react:
-    build: ./desafio-bringell  # Diretório do código React
+    build: ./react-frontend  # Diretório do código React
     ports:
       - "3000:3000"  # Porta do React
     volumes:
-      - ./desafio-bringell:/app  # Mapeando o código local para o container
+      - ./react-frontend:/app  # Mapeando o código local para o container
       - /app/node_modules  # Garantindo que node_modules seja persistente dentro do container
     depends_on:
       - db
